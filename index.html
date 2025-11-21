@@ -549,6 +549,9 @@
 
         const bookTitleInput = document.getElementById('book-title');
         const bookSuggestions = document.getElementById('book-suggestions');
+        const literatureInputGroup = document.getElementById('literature-input-group');
+        const musicInputGroup = document.getElementById('music-input-group');
+        const artInputGroup = document.getElementById('art-input-group');
         const songTitleInput = document.getElementById('song-title');
         const musicSuggestions = document.getElementById('music-suggestions');
         const artTitleInput = document.getElementById('art-title');
@@ -1002,71 +1005,81 @@
         
         let currentMode = 'literature';
 
-        generateBtn.addEventListener('click', async () => {
+       generateBtn.addEventListener('click', async () => {
+            // 1. Setup Variables
             let targetTitle, targetType;
             if (currentMode === 'literature') { targetTitle = bookTitleInput.value.trim(); targetType = "book or play"; } 
             else if (currentMode === 'music') { targetTitle = songTitleInput.value.trim(); targetType = "song or album"; } 
             else { targetTitle = artTitleInput.value.trim(); targetType = "artwork"; }
 
-            if (!targetTitle) { errorMessage.textContent = "Please enter the title."; errorMessage.classList.remove('hidden'); return; }
+            if (!targetTitle) { 
+                errorMessage.textContent = "Please enter the title."; 
+                errorMessage.classList.remove('hidden'); 
+                return; 
+            }
             errorMessage.classList.add('hidden');
             
+            // 2. Lock UI
             const lens = perspectiveTopic.value;
-            const userQuery = `Write a deep, creative, and unique analysis of the ${targetType} "${targetTitle}" through a "${lens}" lens. IMPORTANT: Write in clear, simple, and engaging language. Avoid complex jargon. 3-4 paragraphs.`;
-            const systemPrompt = "You are 'The Universal Perspective Engine.' Provide unique, deep insights into literature, music, and art using simple, conversational language. Do not summarize; focus on subtext, technique, and meaning.";
-
             generateBtn.disabled = true;
             generateBtn.textContent = "Analyzing...";
             loadingIndicator.classList.remove('hidden');
-            perspectiveOutput.innerHTML = '<p class="text-slate-500 italic">Analysis in progress...</p>';
+            perspectiveOutput.innerHTML = '<p class="text-slate-500 italic">Contacting the Cosmos...</p>';
             citationContainer.classList.add('hidden');
             savePerspectiveBtn.classList.add('hidden'); 
-            readPerspectiveBtn.classList.add('hidden'); // Hide Read button
+            readPerspectiveBtn.classList.add('hidden');
+
+            // 3. The Prompt
+            const finalPrompt = `
+                Role: You are 'The Universal Perspective Engine.' 
+                Task: Write a deep, creative analysis of the ${targetType} "${targetTitle}" through a "${lens}" lens.
+                Tone: Clear, simple, and engaging. No complex jargon.
+                Length: 3-4 paragraphs.
+            `;
+
+            // 4. The API Call (Using the STABLE model)
+            // IMPORTANT: Ensure your key is pasted inside the quotes below
+            const apiKey = "AIzaSyAau4gGyPWO4Dm3LVUQorkMs54VIZKckJ0"; 
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
             try {
-                const response = await fetch(apiUrl, {
+                const response = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: userQuery }] }],
-                        tools: [{ "google_search": {} }],
-                        systemInstruction: { parts: [{ text: systemPrompt }] },
-                        config: { temperature: 0.5 }
+                        contents: [{ 
+                            parts: [{ text: finalPrompt }] 
+                        }]
                     })
                 });
-                const result = await response.json();
-                const candidate = result.candidates?.[0];
 
-                if (candidate?.content?.parts?.[0]?.text) {
-                    const text = candidate.content.parts[0].text;
+                const result = await response.json();
+
+                if (!response.ok) {
+                    // This prints the exact error from Google to your screen
+                    throw new Error(result.error?.message || "API Error " + response.status);
+                }
+
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (text) {
                     perspectiveOutput.textContent = text;
                     currentAnalysis = { title: targetTitle, type: targetType, lens: lens, text: text };
                     savePerspectiveBtn.classList.remove('hidden');
-                    readPerspectiveBtn.classList.remove('hidden'); // Show Read button
-
-                    const sources = candidate.groundingMetadata?.groundingAttributions?.filter(s => s.web?.uri && s.web?.title) || [];
-                    if (sources.length > 0) {
-                        citationList.innerHTML = '';
-                        sources.forEach(source => {
-                            const li = document.createElement('li');
-                            li.innerHTML = `<a href="${source.web.uri}" target="_blank" class="text-cyan-400 hover:text-cyan-300 hover:underline">${source.web.title}</a>`;
-                            citationList.appendChild(li);
-                        });
-                        citationContainer.classList.remove('hidden');
-                    }
+                    readPerspectiveBtn.classList.remove('hidden');
                 } else {
-                    perspectiveOutput.textContent = "Could not generate perspective.";
+                    throw new Error("AI returned empty text.");
                 }
+
             } catch (error) {
-                errorMessage.textContent = "Connection failed.";
-                errorMessage.classList.remove('hidden');
+                console.error(error);
+                perspectiveOutput.innerHTML = `<p class="text-red-400 font-bold">Error: ${error.message}</p>`;
             } finally {
                 generateBtn.disabled = false;
                 generateBtn.textContent = "Generate Unique Perspective";
                 loadingIndicator.classList.add('hidden');
             }
         });
-
         // --- Static UI Init ---
         const scientists = [{name:"Albert Einstein",text:"Imagination is more important than knowledge.",image:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Albert_Einstein_Head.jpg/450px-Albert_Einstein_Head.jpg"},{name:"Marie Curie",text:"Nothing in life is to be feared, it is only to be understood.",image:"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Marie_Curie_c._1920s.jpg/440px-Marie_Curie_c._1920s.jpg"},{name:"Carl Sagan",text:"Somewhere, something incredible is waiting to be known.",image:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Carl_Sagan_Planetary_Society.JPG/440px-Carl_Sagan_Planetary_Society.JPG"}];
         const quoteContainer = document.getElementById('scientist-quote-container');
