@@ -106,22 +106,13 @@
         }
         
         /* Generate/Auth Buttons - The Horizon Glow */
-        #generate-perspective-btn, #auth-submit-btn, #guest-btn-primary, #close-modal-btn {
+        #generate-perspective-btn, #guest-btn-primary, #close-modal-btn {
             background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); /* Cyan 600 -> 700 */
             border: 1px solid #06b6d4;
         }
-        #generate-perspective-btn:hover, #auth-submit-btn:hover, #guest-btn-primary:hover, #close-modal-btn:hover {
+        #generate-perspective-btn:hover, #guest-btn-primary:hover, #close-modal-btn:hover {
             background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); /* Brighter */
             box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
-        }
-
-        /* Google Button */
-        #google-btn {
-            background-color: white;
-            color: #1e293b;
-        }
-        #google-btn:hover {
-            background-color: #f1f5f9;
         }
 
         /* Action Buttons (Save/Read) */
@@ -219,47 +210,19 @@
 <body class="min-h-screen flex flex-col selection:bg-cyan-500 selection:text-white overflow-x-hidden">
 
     <!-- =================== VIEW: AUTHENTICATION =================== -->
-    <div id="view-auth" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <!-- Hidden by default, shown only if no local session found -->
+    <div id="view-auth" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
         <div class="absolute inset-0 bg-slate-950 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-100 z-0"></div>
-        <div class="perspective-card w-full max-w-md p-8 rounded-2xl relative z-10 animate-fade-in">
-            <div class="text-center mb-6">
-                <svg class="w-16 h-16 mx-auto text-cyan-400 mb-4 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                <h1 id="auth-title" class="text-3xl font-extrabold text-white mb-2">Welcome Back</h1>
-                <p id="auth-subtitle" class="text-slate-400">Log in to explore the universe of perspectives.</p>
-            </div>
-
-            <!-- Google Login -->
-            <button id="google-btn" class="w-full font-bold py-3 px-4 rounded-lg shadow-lg transition duration-150 ease-in-out flex items-center justify-center gap-3 mb-6">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                Continue with Google
+        <div class="perspective-card w-full max-w-md p-8 rounded-2xl relative z-10 animate-fade-in text-center">
+            <svg class="w-20 h-20 mx-auto text-cyan-400 mb-6 drop-shadow-[0_0_20px_rgba(34,211,238,0.6)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+            <h1 class="text-4xl font-extrabold text-white mb-3">Enter the Cosmos</h1>
+            <p class="text-slate-400 mb-8 text-lg">Explore the hidden subtext of literature, music, and art.</p>
+            
+            <button id="guest-btn-primary" class="w-full text-white font-bold py-4 px-6 rounded-xl shadow-lg transition duration-150 ease-in-out text-lg flex items-center justify-center gap-3 hover:scale-105">
+                <span>Start Exploration</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
             </button>
-
-            <div class="flex items-center gap-4 mb-6">
-                <div class="h-px bg-slate-700 flex-1"></div>
-                <span class="text-slate-500 text-xs font-bold">OR</span>
-                <div class="h-px bg-slate-700 flex-1"></div>
-            </div>
-
-            <form id="email-form" class="space-y-5">
-                <div>
-                    <label class="block text-sm font-medium text-cyan-100 mb-1">Email Address</label>
-                    <input type="email" id="auth-email" placeholder="cosmos@explorer.com" class="w-full p-3 rounded-lg transition duration-150 ease-in-out" required>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-cyan-100 mb-1">Password</label>
-                    <input type="password" id="auth-password" placeholder="••••••••" class="w-full p-3 rounded-lg transition duration-150 ease-in-out" required>
-                </div>
-                <button type="submit" id="auth-submit-btn" class="w-full text-white font-bold py-3 px-4 rounded-lg shadow-lg transition duration-150 ease-in-out">
-                    Log In
-                </button>
-            </form>
-
-            <div class="mt-6 text-center text-sm text-slate-500">
-                <p id="auth-toggle-text" class="mb-4">Don't have an account? <button id="auth-toggle-btn" class="text-cyan-400 hover:underline transition">Sign Up</button></p>
-                <button id="guest-btn-primary" class="w-full text-white font-bold py-3 px-4 rounded-lg shadow-lg transition duration-150 ease-in-out opacity-90 hover:opacity-100" onclick="bypassAuth()">
-                    Start as Guest
-                </button>
-            </div>
+            <p class="mt-6 text-xs text-slate-600">Your journey will be saved locally on this device.</p>
         </div>
     </div>
 
@@ -533,7 +496,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, query, where, onSnapshot, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -553,22 +516,13 @@
         // --- Global State ---
         let currentUser = null;
         let currentAnalysis = null; // { title, type, lens, text, media: {} }
-        let currentMedia = null; // Stores currently selected media from autocomplete
-        let isLoginMode = true;
+        let currentMedia = null; 
         let isMockMode = false; 
-        let currentUtterance = null; // Speech synthesis object
+        let currentUtterance = null; 
 
         // DOM Elements
         const viewAuth = document.getElementById('view-auth');
-        const authTitle = document.getElementById('auth-title');
-        const authSubtitle = document.getElementById('auth-subtitle');
-        const emailForm = document.getElementById('email-form');
-        const authEmail = document.getElementById('auth-email');
-        const authPassword = document.getElementById('auth-password');
-        const authSubmitBtn = document.getElementById('auth-submit-btn');
-        const authToggleBtn = document.getElementById('auth-toggle-btn');
-        const authToggleText = document.getElementById('auth-toggle-text');
-        const googleBtn = document.getElementById('google-btn');
+        const guestBtn = document.getElementById('guest-btn-primary');
         
         const mainAppWrapper = document.getElementById('main-app-wrapper');
         const appContainer = document.getElementById('app-container');
@@ -593,7 +547,6 @@
         const savedList = document.getElementById('saved-list');
         const backToAppSaved = document.getElementById('back-to-app-saved');
 
-        // New Elements for Recommendations and Media
         const bookTitleInput = document.getElementById('book-title');
         const bookSuggestions = document.getElementById('book-suggestions');
         const songTitleInput = document.getElementById('song-title');
@@ -624,121 +577,70 @@
         const modalMediaLink = document.getElementById('modal-media-link');
         const modalMediaLinkText = document.getElementById('modal-media-link-text');
 
-        // --- Auth Helper: UI Update ---
+        // --- Initial Load Logic (Check LocalStorage for persistent session) ---
+        window.addEventListener('load', () => {
+            const savedGuest = localStorage.getItem('cosmos_guest_identity');
+            if (savedGuest) {
+                // Auto-login from persistence
+                const guestUser = JSON.parse(savedGuest);
+                isMockMode = true;
+                updateUIForUser(guestUser);
+            } else {
+                // Show auth screen
+                viewAuth.classList.remove('hidden');
+            }
+        });
+
+        // --- UI Update Helper ---
         function updateUIForUser(user) {
             currentUser = user;
             
-            const displayName = user.displayName || "Cosmic Guest";
+            const displayName = "Cosmic Guest";
             const email = user.email || "guest@cosmos";
-            const photoURL = user.photoURL || `https://api.dicebear.com/9.x/micah/svg?seed=${user.uid}`;
-            const statusText = isMockMode ? "SIMULATED GUEST" : "MEMBER";
+            const photoURL = `https://api.dicebear.com/9.x/micah/svg?seed=${user.uid}`;
+            const statusText = "GUEST EXPLORER";
             
             navAvatar.src = photoURL;
             drawerAvatar.src = photoURL;
             drawerName.textContent = displayName;
             drawerEmail.textContent = email;
             drawerStatus.textContent = statusText;
-            
-            if(isMockMode) {
-                drawerStatus.classList.replace('text-cyan-400', 'text-amber-400');
-            } else {
-                drawerStatus.classList.replace('text-amber-400', 'text-cyan-400');
-            }
+            drawerStatus.classList.replace('text-cyan-400', 'text-amber-400');
 
-            // Transition
             viewAuth.classList.add('hidden');
             mainAppWrapper.classList.remove('hidden');
             mainAppWrapper.classList.add('animate-fade-in');
             
-            // Load Data
             if (isMockMode) {
                 loadMockData();
             } else {
-                setupRealtimeListener(user.uid);
+                // If we were using real firebase, we'd call setupRealtimeListener here
+                // But per requirements, we fallback to local storage/mock mode heavily
+                loadMockData();
             }
         }
 
-        // --- Auth Logic ---
-        authToggleBtn.addEventListener('click', () => {
-            isLoginMode = !isLoginMode;
-            if (isLoginMode) {
-                authTitle.textContent = "Welcome Back";
-                authSubtitle.textContent = "Log in to explore the universe of perspectives.";
-                authSubmitBtn.textContent = "Log In";
-                authToggleText.innerHTML = `Don't have an account? <button id="auth-toggle-btn" class="text-cyan-400 hover:underline transition">Sign Up</button>`;
-            } else {
-                authTitle.textContent = "Join the Cosmos";
-                authSubtitle.textContent = "Create an account to save your discoveries.";
-                authSubmitBtn.textContent = "Sign Up";
-                authToggleText.innerHTML = `Already have an account? <button id="auth-toggle-btn" class="text-cyan-400 hover:underline transition">Log In</button>`;
-            }
-            document.getElementById('auth-toggle-btn').addEventListener('click', () => authToggleBtn.click());
+        // --- Guest Login Action ---
+        guestBtn.addEventListener('click', async () => {
+            // Generate a persistent ID
+            const guestId = "guest-" + Math.random().toString(36).substr(2, 9);
+            const guestUser = {
+                uid: guestId,
+                isAnonymous: true,
+                email: "guest@cosmos"
+            };
+            
+            // Save to local storage for persistence
+            localStorage.setItem('cosmos_guest_identity', JSON.stringify(guestUser));
+            
+            isMockMode = true;
+            updateUIForUser(guestUser);
         });
 
-        const googleProvider = new GoogleAuthProvider();
-        googleBtn.addEventListener('click', async () => {
-            try {
-                await signInWithPopup(auth, googleProvider);
-            } catch (error) {
-                console.error("Google Auth Error:", error);
-                if (error.code === 'auth/unauthorized-domain') {
-                    alert("Domain not authorized. Switching to Guest Simulation mode so you can test the app.");
-                    bypassAuth(); // Auto-fallback
-                } else {
-                    alert(`Authentication failed: ${error.message}`);
-                }
-            }
-        });
-
-        emailForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = authEmail.value;
-            const password = authPassword.value;
-            try {
-                if (isLoginMode) await signInWithEmailAndPassword(auth, email, password);
-                else await createUserWithEmailAndPassword(auth, email, password);
-            } catch (error) {
-                alert(`Authentication failed: ${error.message}`);
-            }
-        });
-
-        // ROBUST BYPASS AUTH (Guest + Simulation Fallback)
-        window.bypassAuth = async function() {
-            try {
-                await signInAnonymously(auth);
-            } catch (error) {
-                console.warn("Firebase Anonymous Auth failed (likely domain restriction). Falling back to simulation.", error);
-                isMockMode = true;
-                const mockUser = {
-                    uid: "guest-sim-" + Math.random().toString(36).substr(2, 9),
-                    isAnonymous: true,
-                    displayName: "Simulated Guest",
-                    email: "guest@simulation"
-                };
-                updateUIForUser(mockUser);
-            }
-        };
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                isMockMode = false;
-                updateUIForUser(user);
-            } else if (!isMockMode) {
-                currentUser = null;
-                viewAuth.classList.remove('hidden');
-                mainAppWrapper.classList.add('hidden');
-                closeDrawer();
-            }
-        });
-
+        // --- Logout Action ---
         drawerLogoutBtn.addEventListener('click', () => {
-            if(isMockMode) {
-                isMockMode = false;
-                currentUser = null;
-                window.location.reload(); 
-            } else {
-                signOut(auth);
-            }
+            localStorage.removeItem('cosmos_guest_identity');
+            window.location.reload();
         });
 
         // --- Drawer Logic ---
@@ -753,7 +655,7 @@
             viewAnalysis.classList.add('hidden');
             viewPremium.classList.add('hidden');
             viewSaved.classList.remove('hidden');
-            if(isMockMode) loadMockData(); 
+            loadMockData(); 
         });
 
         backToAppSaved.addEventListener('click', () => {
@@ -761,28 +663,51 @@
             viewAnalysis.classList.remove('hidden');
         });
 
+        // --- VOICE SELECTION LOGIC (Soft Female) ---
+        function getSoftVoice() {
+            const voices = window.speechSynthesis.getVoices();
+            // Priority list for soft/female sounding voices
+            const preferred = ["Microsoft Zira", "Google US English", "Samantha", "Victoria"];
+            for (let name of preferred) {
+                const found = voices.find(v => v.name.includes(name));
+                if (found) return found;
+            }
+            // Fallback to any female voice
+            return voices.find(v => v.name.includes("Female")) || voices[0];
+        }
+
+        // Ensure voices are loaded
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = () => {
+                // Voices loaded, ready to use getSoftVoice()
+            };
+        }
+
         // --- SPEECH SYNTHESIS LOGIC ---
         function speakText(text, buttonElement, iconElement, textElement = null) {
             if ('speechSynthesis' in window) {
-                // Cancel previous speech
-                window.speechSynthesis.cancel();
+                window.speechSynthesis.cancel(); // Cancel previous
 
                 if (currentUtterance && currentUtterance.activeButton === buttonElement) {
-                    // Stop if clicking the same button
                     currentUtterance = null;
-                    // Reset UI
-                    iconElement.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>`; // Speaker
+                    iconElement.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>`;
                     if (textElement) textElement.textContent = "Read Aloud";
                     buttonElement.classList.remove('active');
                     return;
                 }
 
                 const utterance = new SpeechSynthesisUtterance(text);
+                const selectedVoice = getSoftVoice();
+                if (selectedVoice) utterance.voice = selectedVoice;
+                
+                // Tweak properties for softness
+                utterance.rate = 0.9; 
+                utterance.pitch = 1.1; 
+
                 utterance.activeButton = buttonElement;
                 currentUtterance = utterance;
 
-                // Update UI to Stop State
-                iconElement.innerHTML = `<rect x="6" y="6" width="12" height="12" fill="currentColor" />`; // Square (Stop)
+                iconElement.innerHTML = `<rect x="6" y="6" width="12" height="12" fill="currentColor" />`;
                 if (textElement) textElement.textContent = "Stop";
                 buttonElement.classList.add('active');
 
@@ -795,7 +720,7 @@
 
                 window.speechSynthesis.speak(utterance);
             } else {
-                alert("Text-to-speech is not supported in this browser.");
+                alert("Text-to-speech is not supported.");
             }
         }
 
@@ -808,7 +733,6 @@
         readModalBtn.addEventListener('click', () => {
             const text = modalText.textContent;
             if (text) {
-                // Modal button icon is inside the SVG tag, target the SVG itself
                 const iconSvg = readModalBtn.querySelector('svg');
                 speakText(text, readModalBtn, iconSvg);
             }
@@ -816,7 +740,6 @@
 
         // --- MODAL LOGIC ---
         function openSavedAnalysisModal(data) {
-            // Cancel any ongoing speech from main view
             window.speechSynthesis.cancel();
             
             modalLens.textContent = data.lens;
@@ -840,7 +763,7 @@
 
         function closeModal() {
             modal.classList.add('hidden');
-            window.speechSynthesis.cancel(); // Stop reading when closing modal
+            window.speechSynthesis.cancel(); 
         }
 
         closeModalBtn.addEventListener('click', closeModal);
@@ -852,7 +775,7 @@
             savedList.innerHTML = '';
             const localData = JSON.parse(localStorage.getItem('cosmos_saved') || '[]');
             if (localData.length === 0) {
-                savedList.innerHTML = '<div class="col-span-full text-center text-slate-500 italic">No saved perspectives yet (Simulated Storage).</div>';
+                savedList.innerHTML = '<div class="col-span-full text-center text-slate-500 italic">No saved perspectives yet.</div>';
                 return;
             }
             localData.forEach(data => renderSavedCard(data));
@@ -881,47 +804,26 @@
             savedList.prepend(card);
         }
 
-        let unsubscribeSnapshot = null;
-        function setupRealtimeListener(userId) {
-            if (unsubscribeSnapshot) unsubscribeSnapshot();
-            const q = query(collection(db, 'artifacts', appId, 'users', userId, 'saved_perspectives'), orderBy('createdAt', 'desc'));
-            unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
-                savedList.innerHTML = '';
-                if (snapshot.empty) {
-                    savedList.innerHTML = '<div class="col-span-full text-center text-slate-500 italic">No saved perspectives yet.</div>';
-                    return;
-                }
-                snapshot.forEach((doc) => {
-                    const d = doc.data();
-                    // Convert Timestamp to Date object for consistent handling
-                    const createdAt = d.createdAt && d.createdAt.toDate ? d.createdAt.toDate() : new Date(d.createdAt);
-                    renderSavedCard({ ...d, createdAt: createdAt });
-                });
-            });
-        }
-
         savePerspectiveBtn.addEventListener('click', async () => {
             if (!currentUser || !currentAnalysis) return;
             const btnOriginalText = savePerspectiveBtn.innerHTML;
             savePerspectiveBtn.disabled = true;
             savePerspectiveBtn.innerHTML = `<span class="animate-pulse">Saving...</span>`;
 
-            // Add currentMedia to the analysis object before saving
             const analysisToSave = {
                 ...currentAnalysis,
-                media: currentMedia, // Add the selected work details
-                createdAt: isMockMode ? new Date().toISOString() : serverTimestamp()
+                media: currentMedia, 
+                createdAt: new Date().toISOString()
             };
 
             try {
-                if(isMockMode) {
-                    const existing = JSON.parse(localStorage.getItem('cosmos_saved') || '[]');
-                    existing.push(analysisToSave);
-                    localStorage.setItem('cosmos_saved', JSON.stringify(existing));
-                    await new Promise(r => setTimeout(r, 600));
-                } else {
-                    await addDoc(collection(db, 'artifacts', appId, 'users', currentUser.uid, 'saved_perspectives'), analysisToSave);
-                }
+                // ALWAYS USE LOCAL STORAGE FOR THIS "GUEST" VERSION
+                const existing = JSON.parse(localStorage.getItem('cosmos_saved') || '[]');
+                existing.push(analysisToSave);
+                localStorage.setItem('cosmos_saved', JSON.stringify(existing));
+                
+                // Simulate delay for effect
+                await new Promise(r => setTimeout(r, 600));
                 
                 savePerspectiveBtn.innerHTML = `<span class="text-green-400">Saved!</span>`;
                 setTimeout(() => {
@@ -935,8 +837,7 @@
             }
         });
 
-        // --- RECOMMENDATION SYSTEM & SELECTED WORK (Restored) ---
-
+        // --- RECOMMENDATION SYSTEM & SELECTED WORK ---
         function renderSelectedMedia(type, item) {
             selectedMediaContainer.classList.remove('hidden');
             let mediaData = {};
@@ -988,7 +889,6 @@
                 mediaData = { title, subtitle: artist, image: imageUrl, link, linkText: "View at Art Institute" };
             }
 
-            // Store globally for saving later
             currentMedia = mediaData;
         }
 
